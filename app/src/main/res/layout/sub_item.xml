@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:weightSum="7">
+
+    <ImageView
+        android:id="@+id/color_selected_item"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:src="@color/purple_200">
+
+    </ImageView>
+
+    <TextView
+        android:id="@+id/sub_name_item"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="4"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center_vertical"
+        android:text="과목명"
+        android:textSize="18sp">
+
+    </TextView>
+
+    <Button
+        android:id="@+id/btn_modify_item"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1.5"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="5dp"
+        android:text="수정"
+        android:textStyle="bold"
+        android:textSize="10sp">
+
+    </Button>
+
+    <Button
+        android:id="@+id/btn_delete_item"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="1.5"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/btn_modify_item"
+        android:text="삭제"
+        android:textStyle="bold"
+        android:textSize="10sp">
+
+    </Button>
+
+</LinearLayout>
