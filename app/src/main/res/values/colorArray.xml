@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="themeColorHex">
-        <item>#f6e58d</item>
-        <item>#ffbe76</item>
-        <item>#ff7979</item>
-        <item>#badc58</item>
-        <item>#dff9fb</item>
-        <item>#7ed6df</item>
-        <item>#e056fd</item>
-        <item>#686de0</item>
-        <item>#30336b</item>
-        <item>#95afc0</item>
+        <item>#F6E58D</item>
+        <item>#FFBE76</item>
+        <item>#FF7979</item>
+        <item>#BABC58</item>
+        <item>#DFF9FB</item>
+        <item>#7ED6DF</item>
+        <item>#E056FD</item>
+        <item>#686dE0</item>
+        <item>#30336B</item>
+        <item>#95AFC0</item>
     </string-array>
 </resources>

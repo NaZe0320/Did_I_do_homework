@@ -7,33 +7,44 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.dhaval2404.colorpicker.ColorPickerDialog
-import com.github.dhaval2404.colorpicker.MaterialColorPickerBottomSheet
 import com.github.dhaval2404.colorpicker.MaterialColorPickerDialog
 import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.naze.todoproject.adapter.SubAdapter
-import com.naze.todoproject.data.SubData
+import com.naze.todoproject.database.UserDatabase
 import com.naze.todoproject.databinding.ActivityAddSubBinding
+import com.naze.todoproject.dto.Sub
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class AddSubActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddSubBinding
 
     private lateinit var subAdapter: SubAdapter
-    private val subData = mutableListOf<SubData>()
+    private val subData = mutableListOf<Sub>()
 
-    private var subColor:String = "#f6e58d"
+    private lateinit var db:UserDatabase
+    private var subColor:String = "#F6E58D"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddSubBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        db = UserDatabase.getInstance(applicationContext)!!
+
         subAdapter= SubAdapter(this)
         binding.subList.adapter = subAdapter
         binding.subList.layoutManager = LinearLayoutManager(this)
+        //recyclerView 설정
 
-        binding.colorPicker.setColorFilter(Color.parseColor(subColor))
+        //deleteAll() 데이터베이스 초기화
+        //List 초기화
+        refreshList()
+
+        binding.colorPicker.setColorFilter(Color.parseColor(subColor)) //
 
         binding.subAddBtn.setOnClickListener {
             onClickAddBtn()
@@ -49,14 +60,12 @@ class AddSubActivity : AppCompatActivity() {
 
         if (subEdit.text.isNotEmpty()) {
             subData.apply {
-                add(SubData(subColor, subEdit.text.toString()))
-                Log.d(
-                    "SubList",
-                    subColor + "/" + subEdit.text.toString()
-                )
+                add(Sub(subEdit.text.toString(),subColor))
             }
             subAdapter.datas = subData
-            subAdapter.notifyDataSetChanged()
+            subAdapter.notifyDataSetChanged() //갱신
+
+            dbInsert(subColor,subEdit.text.toString())
 
             subEdit.text = null
         } else {
@@ -75,5 +84,32 @@ class AddSubActivity : AppCompatActivity() {
                 subColor = colorHex
             }.show()
     }
+
+    private fun dbInsert(subColor: String, subName: String){
+        CoroutineScope(Dispatchers.IO).launch {
+            db.subDao.insertSub(Sub(subName,subColor))
+        }
+    }
+
+    private fun refreshList(){
+        CoroutineScope(Dispatchers.IO).launch {
+            val savedSub = db.subDao.getAllSub()
+            Log.d("DB", savedSub.toString())
+                if(savedSub.isNotEmpty()) {
+                    subData.addAll(savedSub)
+                    Log.d("DB", subData.toString())
+                    subAdapter.datas = subData
+                    subAdapter.notifyDataSetChanged()
+                }
+        }
+    }
+
+    private fun deleteAll(){
+        CoroutineScope(Dispatchers.IO).launch {
+            db.subDao.deleteAllSub()
+        }
+    }
+
+
 
 }

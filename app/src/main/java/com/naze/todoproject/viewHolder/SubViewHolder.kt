@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.naze.todoproject.R
-import com.naze.todoproject.data.SubData
+import com.naze.todoproject.dto.Sub
 
 class SubViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
@@ -16,9 +16,12 @@ class SubViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val subBtnModify: Button = itemView.findViewById(R.id.btn_modify_item)
     private val subBtnDelete: Button = itemView.findViewById(R.id.btn_delete_item)
 
-    fun bind(item: SubData){
-        subColor.setColorFilter(Color.parseColor(item.sub_color))
-        subName.text = item.sub_name.toString()
+    fun bind(item: Sub){
+        subColor.setColorFilter(Color.parseColor(item.color))
+        subName.text = item.subject.toString()
 
+        subBtnDelete.setOnClickListener {
+
+        }
     }
 }
