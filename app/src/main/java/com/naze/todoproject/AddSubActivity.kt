@@ -15,7 +15,6 @@ import com.naze.todoproject.databinding.ActivityAddSubBinding
 import com.naze.todoproject.dto.Sub
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class AddSubActivity : AppCompatActivity() {
@@ -28,6 +27,18 @@ class AddSubActivity : AppCompatActivity() {
     private lateinit var db:UserDatabase
     private var subColor:String = "#F6E58D"
 
+    init {
+        instance = this
+    }
+
+    companion object {
+        private var instance:AddSubActivity?=null
+
+        fun getInstance():AddSubActivity? {
+            return instance
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddSubBinding.inflate(layoutInflater)
@@ -36,13 +47,14 @@ class AddSubActivity : AppCompatActivity() {
         db = UserDatabase.getInstance(applicationContext)!!
 
         subAdapter= SubAdapter(this)
+        subAdapter!!.datas = subData
         binding.subList.adapter = subAdapter
         binding.subList.layoutManager = LinearLayoutManager(this)
         //recyclerView 설정
 
         //deleteAll() 데이터베이스 초기화
         //List 초기화
-        refreshList()
+        initialize()
 
         binding.colorPicker.setColorFilter(Color.parseColor(subColor)) //
 
@@ -63,9 +75,11 @@ class AddSubActivity : AppCompatActivity() {
                 add(Sub(subEdit.text.toString(),subColor))
             }
             subAdapter.datas = subData
-            subAdapter.notifyDataSetChanged() //갱신
 
             dbInsert(subColor,subEdit.text.toString())
+
+            //갱신
+            subAdapter.notifyDataSetChanged() //바꿔줘야 하지만 이해도 부족으로 우선 오류가 발생하지 않도록
 
             subEdit.text = null
         } else {
@@ -91,7 +105,7 @@ class AddSubActivity : AppCompatActivity() {
         }
     }
 
-    private fun refreshList(){
+    private fun initialize(){
         CoroutineScope(Dispatchers.IO).launch {
             val savedSub = db.subDao.getAllSub()
             Log.d("DB", savedSub.toString())
@@ -99,10 +113,11 @@ class AddSubActivity : AppCompatActivity() {
                     subData.addAll(savedSub)
                     Log.d("DB", subData.toString())
                     subAdapter.datas = subData
+
                     subAdapter.notifyDataSetChanged()
                 }
         }
-    }
+    } //최초 초기화
 
     private fun deleteAll(){
         CoroutineScope(Dispatchers.IO).launch {
@@ -110,6 +125,16 @@ class AddSubActivity : AppCompatActivity() {
         }
     }
 
+    fun deleteSub(sub: Sub) {
+        subData.remove(sub)
+        subAdapter?.notifyDataSetChanged()
 
+        CoroutineScope(Dispatchers.IO).launch {
+            db.subDao.deleteSub(sub)
+        }
+    }
 
+    fun editSub(position: Int, sub: Sub) {
+
+    }
 }

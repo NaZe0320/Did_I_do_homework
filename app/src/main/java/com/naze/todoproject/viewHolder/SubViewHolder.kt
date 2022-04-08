@@ -1,26 +1,49 @@
 package com.naze.todoproject.viewHolder
 
 import android.graphics.Color
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.utils.widget.ImageFilterButton
 import androidx.recyclerview.widget.RecyclerView
+import com.naze.todoproject.AddSubActivity
 import com.naze.todoproject.R
+import com.naze.todoproject.database.UserDatabase.Companion.getInstance
+import com.naze.todoproject.databinding.SubItemBinding
 import com.naze.todoproject.dto.Sub
+import kotlinx.coroutines.NonDisposableHandle.parent
 
-class SubViewHolder(view: View): RecyclerView.ViewHolder(view) {
+class SubViewHolder(private val binding: SubItemBinding): RecyclerView.ViewHolder(binding.root) {
 
-    private val subColor: ImageView = itemView.findViewById(R.id.color_selected_item)
-    private val subName: TextView = itemView.findViewById(R.id.sub_name_item)
-    private val subBtnModify: Button = itemView.findViewById(R.id.btn_modify_item)
-    private val subBtnDelete: Button = itemView.findViewById(R.id.btn_delete_item)
+    private val addSubActivity = AddSubActivity.getInstance()
+    var sSub: Sub? = null
+    var sPosition: Int? = null
 
-    fun bind(item: Sub){
+    private val subColor: ImageView = binding.colorSelectedItem
+    private val subName: TextView = binding.subNameItem
+    private val subBtnModify: ImageFilterButton = binding.btnModifyItem
+    private val subBtnDelete: ImageFilterButton = binding.btnDeleteItem
+
+
+    fun bind(item: Sub, position: Int){
+        this.sSub = item
+        this.sPosition = position
         subColor.setColorFilter(Color.parseColor(item.color))
         subName.text = item.subject.toString()
+    }
 
+    init {
         subBtnDelete.setOnClickListener {
+            Log.v("delete_sub",sSub.toString())
+            Log.v("delete_sub",sPosition.toString())
+            addSubActivity?.deleteSub(sSub!!)
+        }
+
+        subBtnModify.setOnClickListener {
 
         }
     }
