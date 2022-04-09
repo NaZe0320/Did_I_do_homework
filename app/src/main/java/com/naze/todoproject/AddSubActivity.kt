@@ -1,5 +1,6 @@
 package com.naze.todoproject
 
+import android.app.Dialog
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,8 @@ import com.github.dhaval2404.colorpicker.model.ColorShape
 import com.naze.todoproject.adapter.SubAdapter
 import com.naze.todoproject.database.UserDatabase
 import com.naze.todoproject.databinding.ActivityAddSubBinding
+import com.naze.todoproject.dialog.CustomDelDialog
+import com.naze.todoproject.dialog.CustomEditDialog
 import com.naze.todoproject.dto.Sub
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -77,11 +80,12 @@ class AddSubActivity : AppCompatActivity() {
             subAdapter.datas = subData
 
             dbInsert(subColor,subEdit.text.toString())
-
+            Log.v("Color",binding.colorPicker.colorFilter.toString()+"+"+subColor)
             //갱신
             subAdapter.notifyDataSetChanged() //바꿔줘야 하지만 이해도 부족으로 우선 오류가 발생하지 않도록
 
             subEdit.text = null
+
         } else {
             Toast.makeText(this,"과목 명이 빈 칸일 수 없습니다.",Toast.LENGTH_SHORT).show()
         }
@@ -126,15 +130,31 @@ class AddSubActivity : AppCompatActivity() {
     }
 
     fun deleteSub(sub: Sub) {
-        subData.remove(sub)
-        subAdapter?.notifyDataSetChanged()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            db.subDao.deleteSub(sub)
-        }
+        val dialog = CustomDelDialog(this)
+        dialog.showDialog()
+        dialog.setOnClickListener(object : CustomDelDialog.OnDialogClickListener {
+            override fun onClicked() {
+                subData.remove(sub)
+                subAdapter?.notifyDataSetChanged()
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    db.subDao.deleteSub(sub)
+                }
+            }
+        })
     }
 
     fun editSub(position: Int, sub: Sub) {
+        val dialog = CustomEditDialog(this)
+        dialog.showDialog()
+        dialog.setOnClickListener(object :CustomEditDialog.OnDialogClickListener {
+            override fun onClicked(color: String, subject: String) {
+                TODO("Not yet implemented")
+            }
 
-    }
+        })
+    } //추후 수정 예정
+
+
 }
