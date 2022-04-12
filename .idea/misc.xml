@@ -3,15 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/drawable/ic_baseline_settings_applications_24.xml" value="0.1885" />
         <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/drawable/rec_border.xml" value="0.193" />
         <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/drawable/ring_border.xml" value="0.23" />
         <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/drawable/round_border.xml" value="0.193" />
         <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/drawable/round_border_10.xml" value="0.193" />
-        <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/layout/activity_add_sub.xml" value="0.3609375" />
+        <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/layout/activity_add_sub.xml" value="0.1" />
         <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/layout/activity_main.xml" value="0.3619791666666667" />
+        <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/layout/activity_splash.xml" value="0.18020833333333333" />
         <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/layout/custom_delete_dialog.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/layout/custom_edit_dialog.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/layout/sub_item.xml" value="0.3619791666666667" />
+        <entry key="..\:/Users/rwt12/AndroidStudioProjects/ToDoProject/app/src/main/res/layout/todo_item.xml" value="0.18858560794044665" />
       </map>
     </option>
   </component>

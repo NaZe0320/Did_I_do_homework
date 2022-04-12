@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ToDoProject">
         <activity
+            android:name=".CustomAddDialog"
+            android:exported="false" />
+        <activity
             android:name=".AddSubActivity"
             android:exported="false" />
         <activity

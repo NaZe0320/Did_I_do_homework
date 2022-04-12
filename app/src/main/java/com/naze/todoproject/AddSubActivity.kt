@@ -1,6 +1,5 @@
 package com.naze.todoproject
 
-import android.app.Dialog
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -30,8 +29,10 @@ class AddSubActivity : AppCompatActivity() {
     private lateinit var db:UserDatabase
     private var subColor:String = "#F6E58D"
 
+
     init {
         instance = this
+        Log.v("init","init")
     }
 
     companion object {
@@ -50,7 +51,7 @@ class AddSubActivity : AppCompatActivity() {
         db = UserDatabase.getInstance(applicationContext)!!
 
         subAdapter= SubAdapter(this)
-        subAdapter!!.datas = subData
+        subAdapter!!.subData = subData
         binding.subList.adapter = subAdapter
         binding.subList.layoutManager = LinearLayoutManager(this)
         //recyclerView 설정
@@ -77,7 +78,7 @@ class AddSubActivity : AppCompatActivity() {
             subData.apply {
                 add(Sub(subEdit.text.toString(),subColor))
             }
-            subAdapter.datas = subData
+            subAdapter.subData = subData
 
             dbInsert(subColor,subEdit.text.toString())
             Log.v("Color",binding.colorPicker.colorFilter.toString()+"+"+subColor)
@@ -112,14 +113,13 @@ class AddSubActivity : AppCompatActivity() {
     private fun initialize(){
         CoroutineScope(Dispatchers.IO).launch {
             val savedSub = db.subDao.getAllSub()
-            Log.d("DB", savedSub.toString())
-                if(savedSub.isNotEmpty()) {
-                    subData.addAll(savedSub)
-                    Log.d("DB", subData.toString())
-                    subAdapter.datas = subData
+            if(savedSub.isNotEmpty()) {
+                subData.addAll(savedSub)
+                subAdapter.subData = subData
 
-                    subAdapter.notifyDataSetChanged()
-                }
+                subAdapter.notifyDataSetChanged()
+            }
+            Log.d("DB", subData.toString())
         }
     } //최초 초기화
 
@@ -130,17 +130,15 @@ class AddSubActivity : AppCompatActivity() {
     }
 
     fun deleteSub(sub: Sub) {
-
         val dialog = CustomDelDialog(this)
         dialog.showDialog()
         dialog.setOnClickListener(object : CustomDelDialog.OnDialogClickListener {
             override fun onClicked() {
-                subData.remove(sub)
-                subAdapter?.notifyDataSetChanged()
-
                 CoroutineScope(Dispatchers.IO).launch {
                     db.subDao.deleteSub(sub)
-                }
+                } //삭제 딜레이 주기
+                subData.remove(sub)
+                subAdapter?.notifyDataSetChanged()
             }
         })
     }
